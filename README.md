@@ -242,6 +242,7 @@ MIT License
 
 ## 🙏 致谢
 
+- [TRAE SOLO](https://solo.trae.ai) - 本项目使用 TRAE SOLO 进行开发，感谢 TRAE SOLO 提供的 AI 辅助编程能力
 - [硅基流动](https://siliconflow.cn) - 提供AI模型API服务
 - [Qwen](https://qwenlm.github.io) - Qwen2.5 大语言模型
 - [React](https://react.dev) - 前端框架
