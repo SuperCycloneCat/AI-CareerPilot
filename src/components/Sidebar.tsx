@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HomeIcon, JobIcon, PlanIcon, ResumeIcon, InterviewIcon, HistoryIcon, SettingsIcon } from './NavIcons';
+import { HomeIcon, AllInOneIcon, JobIcon, PlanIcon, ResumeIcon, InterviewIcon, HistoryIcon, SettingsIcon } from './NavIcons';
 
 const navItems = [
   { path: '/', label: '首页', Icon: HomeIcon },
+  { path: '/all-in-one', label: '求职一条龙', Icon: AllInOneIcon },
   { path: '/job-analyzer', label: '岗位翻译器', Icon: JobIcon },
   { path: '/action-planner', label: '行动规划师', Icon: PlanIcon },
   { path: '/resume-coach', label: '简历优化', Icon: ResumeIcon },

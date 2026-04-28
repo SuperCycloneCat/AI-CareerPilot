@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
+import { AllInOne } from './pages/AllInOne';
 import { JobAnalyzer } from './pages/JobAnalyzer';
 import { ActionPlanner } from './pages/ActionPlanner';
 import { ResumeCoach } from './pages/ResumeCoach';
@@ -16,6 +17,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/all-in-one" element={<AllInOne />} />
             <Route path="/job-analyzer" element={<JobAnalyzer />} />
             <Route path="/action-planner" element={<ActionPlanner />} />
             <Route path="/resume-coach" element={<ResumeCoach />} />

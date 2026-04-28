@@ -3,6 +3,14 @@ import { getApiKey } from '../services/storage';
 
 const features = [
   {
+    icon: '🚀',
+    title: '求职一条龙',
+    description: '输入一次信息，AI依次完成岗位解读、行动规划、简历优化、面试模拟',
+    path: '/all-in-one',
+    color: 'from-indigo-500 to-purple-600',
+    featured: true,
+  },
+  {
     icon: '📋',
     title: '岗位翻译器',
     description: '粘贴JD，AI帮你解读真实工作内容、技能要求、不适合人群',
@@ -63,7 +71,9 @@ export function Home() {
           <Link
             key={feature.path}
             to={hasApiKey ? feature.path : '/settings'}
-            className="glass-card p-6 hover:shadow-lg transition-all duration-300 group"
+            className={`glass-card p-6 hover:shadow-lg transition-all duration-300 group ${
+              (feature as any).featured ? 'md:col-span-2 ring-2 ring-primary-400/50' : ''
+            }`}
           >
             <div className="flex items-start gap-4">
               <div

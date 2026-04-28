@@ -2,10 +2,20 @@ import type { HistoryItem } from '../types';
 
 const STORAGE_KEYS = {
   API_KEY: 'career-pilot-api-key',
+  MODEL: 'career-pilot-model',
   THEME: 'career-pilot-theme',
   HISTORY: 'career-pilot-history',
   USER_CONFIG: 'career-pilot-user-config',
 };
+
+export const MODEL_OPTIONS = [
+  { value: 'Qwen/Qwen2.5-72B-Instruct', label: 'Qwen2.5-72B', description: '默认模型，综合能力强' },
+  { value: 'Pro/moonshotai/Kimi-K2.5', label: 'Kimi-K2.5', description: '推理能力出色' },
+  { value: 'Qwen/Qwen3.6-27B', label: 'Qwen3.6-27B', description: '轻量高效' },
+  { value: 'Pro/deepseek-ai/DeepSeek-V3.2', label: 'DeepSeek-V3.2', description: '深度推理，代码能力强' },
+];
+
+export const DEFAULT_MODEL = 'Qwen/Qwen2.5-72B-Instruct';
 
 /**
  * API Key 存储
@@ -20,6 +30,17 @@ export function setApiKey(key: string): void {
 
 export function removeApiKey(): void {
   localStorage.removeItem(STORAGE_KEYS.API_KEY);
+}
+
+/**
+ * 模型选择存储
+ */
+export function getModel(): string {
+  return localStorage.getItem(STORAGE_KEYS.MODEL) || DEFAULT_MODEL;
+}
+
+export function setModel(model: string): void {
+  localStorage.setItem(STORAGE_KEYS.MODEL, model);
 }
 
 /**

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { getApiKey, setApiKey, getTheme, setTheme } from '../services/storage';
+import { getApiKey, setApiKey, getModel, setModel, getTheme, setTheme, MODEL_OPTIONS } from '../services/storage';
 import { testConnection } from '../services/ai';
 import { useTheme } from '../contexts/ThemeContext';
 
 export function Settings() {
   const [apiKey, setApiKeyState] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
@@ -13,10 +14,12 @@ export function Settings() {
 
   useEffect(() => {
     setApiKeyState(getApiKey());
+    setSelectedModel(getModel());
   }, []);
 
   const handleSave = () => {
     setApiKey(apiKey);
+    setModel(selectedModel);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2000);
   };
@@ -30,7 +33,7 @@ export function Settings() {
     setIsTesting(true);
     setTestResult(null);
 
-    const result = await testConnection(apiKey);
+    const result = await testConnection(apiKey, selectedModel);
     setTestResult(result);
     setIsTesting(false);
   };
@@ -61,6 +64,12 @@ export function Settings() {
                   setApiKeyState(e.target.value);
                   setTestResult(null);
                 }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const pastedText = e.clipboardData.getData('text');
+                  setApiKeyState(pastedText);
+                  setTestResult(null);
+                }}
                 placeholder="sk-xxxxxxxxxxxxxxxx"
                 className="input-field pr-20"
               />
@@ -81,6 +90,30 @@ export function Settings() {
               >
                 硅基流动控制台
               </a>
+            </p>
+          </div>
+
+          {/* 模型选择 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
+              AI 模型
+            </label>
+            <select
+              value={selectedModel}
+              onChange={(e) => {
+                setSelectedModel(e.target.value);
+                setTestResult(null);
+              }}
+              className="input-field"
+            >
+              {MODEL_OPTIONS.map((model) => (
+                <option key={model.value} value={model.value}>
+                  {model.label} — {model.description}
+                </option>
+              ))}
+            </select>
+            <p className="mt-2 text-sm text-gray-500 dark:text-white">
+              不同模型的速度和能力各有侧重，可根据需求切换
             </p>
           </div>
 
@@ -191,7 +224,7 @@ export function Settings() {
             <strong className="text-gray-900 dark:text-white">CareerPilot</strong> 是一款AI驱动的求职助手应用。
           </p>
           <p>
-            使用 <strong className="text-gray-900 dark:text-white">Qwen/Qwen2.5-72B-Instruct</strong> 模型提供AI能力。
+            支持多种AI模型，通过硅基流动API提供服务。
           </p>
           <p>
             专为大学生和应届毕业生设计，帮助你更好地理解岗位、规划求职、优化简历、练习面试。

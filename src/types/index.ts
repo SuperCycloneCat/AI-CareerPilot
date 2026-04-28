@@ -26,7 +26,7 @@ export interface ApiConfig {
 // 历史记录
 export interface HistoryItem {
   id: string;
-  type: 'job-analyzer' | 'action-planner' | 'resume-coach' | 'interview-coach';
+  type: 'job-analyzer' | 'action-planner' | 'resume-coach' | 'interview-coach' | 'all-in-one';
   title: string;
   summary: string;
   content: string;

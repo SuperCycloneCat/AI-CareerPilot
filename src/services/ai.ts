@@ -1,7 +1,7 @@
 import type { ApiConfig, ChatMessage, StreamChunk } from '../types';
+import { getModel } from './storage';
 
 const DEFAULT_BASE_URL = 'https://api.siliconflow.cn/v1';
-const DEFAULT_MODEL = 'Qwen/Qwen2.5-72B-Instruct';
 
 /**
  * 流式调用AI API
@@ -17,7 +17,7 @@ export async function streamChat(
   }
 ): Promise<void> {
   const baseUrl = options?.baseUrl || DEFAULT_BASE_URL;
-  const model = options?.model || DEFAULT_MODEL;
+  const model = options?.model || getModel();
 
   const response = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
@@ -79,8 +79,12 @@ export async function streamChat(
 /**
  * 测试API连接
  */
-export async function testConnection(apiKey: string): Promise<{ success: boolean; message: string }> {
+export async function testConnection(apiKey: string, model?: string): Promise<{ success: boolean; message: string }> {
   try {
+    const useModel = model || getModel();
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+
     const response = await fetch(`${DEFAULT_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
@@ -88,14 +92,17 @@ export async function testConnection(apiKey: string): Promise<{ success: boolean
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: DEFAULT_MODEL,
+        model: useModel,
         messages: [
           { role: 'system', content: '请只用一个字回复：好' },
           { role: 'user', content: '测试' }
         ],
         max_tokens: 1,
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (response.ok) {
       return { success: true, message: '连接成功' };
@@ -104,6 +111,9 @@ export async function testConnection(apiKey: string): Promise<{ success: boolean
       return { success: false, message: error.message || `连接失败: ${response.status}` };
     }
   } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return { success: false, message: '连接超时（20秒），该模型可能暂时不可用，请稍后重试或切换其他模型' };
+    }
     return { success: false, message: `网络错误: ${error instanceof Error ? error.message : '未知错误'}` };
   }
 }
@@ -117,7 +127,7 @@ export async function chat(
   options?: { baseUrl?: string; model?: string }
 ): Promise<string> {
   const baseUrl = options?.baseUrl || DEFAULT_BASE_URL;
-  const model = options?.model || DEFAULT_MODEL;
+  const model = options?.model || getModel();
 
   const response = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',

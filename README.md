@@ -13,12 +13,14 @@
 
 | 模块 | 功能描述 |
 |------|---------|
+| 🚀 **求职一条龙** | 输入一次信息，AI依次完成岗位解读、行动规划、简历优化、面试模拟，生成完整求职报告 |
 | 📋 **岗位翻译器** | 粘贴JD，AI帮你解读真实工作内容、硬技能/软技能要求、不适合人群 |
 | 📝 **行动规划师** | 输入目标岗位和你的背景，AI生成能力诊断 + 4阶段行动清单 |
 | 📄 **简历优化** | 粘贴简历片段，AI诊断问题并给出STAR法则改写建议 |
-| 🎤 **面试练习** | 模拟真实面试（行为/技术/案例），AI评分并给出改进建议 |
+| 🎤 **面试练习** | 模拟真实面试（行为/技术/案例），AI评分并给出改进建议，支持多轮追问 |
 | 🌙 **白天/夜间模式** | 白天蓝天白云 ☁️，夜间星空流星 🌠，一键切换 |
-| 📁 **历史记录** | 所有使用记录自动保存，随时回顾 |
+| 📁 **历史记录** | 所有使用记录自动保存，支持删除、导出，随时回顾 |
+| 🤖 **多模型支持** | 支持 Qwen、DeepSeek、Kimi 等多种AI模型，在设置中自由切换 |
 
 ---
 
@@ -28,8 +30,22 @@
 - **构建工具**: Vite 8
 - **样式方案**: TailwindCSS 4（CSS原生配置）
 - **路由**: React Router v7
-- **AI模型**: 硅基流动 API（Qwen/Qwen2.5-72B-Instruct）
+- **AI服务**: 硅基流动 API（支持多种大语言模型）
+- **存储**: localStorage（无需后端）
 - **部署**: 支持静态部署（Vercel / Netlify / GitHub Pages）
+
+---
+
+## 🤖 支持的AI模型
+
+| 模型 | 特点 |
+|------|------|
+| Qwen2.5-72B（默认） | 综合能力强，适合大多数场景 |
+| Kimi-K2.5 | 推理能力出色 |
+| Qwen3.6-27B | 轻量高效，响应速度快 |
+| DeepSeek-V3.2 | 深度推理，代码能力强 |
+
+> 所有模型均通过硅基流动（SiliconFlow）API提供服务，新用户注册即赠免费额度。
 
 ---
 
@@ -109,12 +125,13 @@ npm run dev
 
 ---
 
-### 第五步：配置 API Key
+### 第五步：配置 API Key 和模型
 
 1. 在应用首页点击右上角 **⚙️ 设置** 按钮（或底部导航栏的"设置"）
 2. 在 **API 配置** 区域粘贴你的硅基流动 API Key
-3. 点击 **💾 保存** 按钮
-4. （可选）点击 **🔌 测试连接** 验证API Key是否可用
+3. 在 **AI 模型** 下拉框中选择你想使用的模型（默认 Qwen2.5-72B）
+4. 点击 **💾 保存** 按钮
+5. （可选）点击 **🔌 测试连接** 验证API Key和模型是否可用
 
 配置完成后，即可开始使用所有AI功能！
 
@@ -122,22 +139,29 @@ npm run dev
 
 ## 🎯 使用指南
 
-### 岗位翻译器
+### 🚀 求职一条龙（推荐新手）
+1. 进入「求职一条龙」
+2. 填写招聘JD、目标岗位、年级等基本信息
+3. 点击「一键启动」，AI会自动按顺序执行4个步骤
+4. 完成后可查看完整报告，也可导出为 Markdown 文件
+5. 如需更深入分析，可通过快捷链接跳转到各独立模块
+
+### 📋 岗位翻译器
 1. 找到一个招聘JD（职位描述），复制全文
 2. 进入「岗位翻译器」，粘贴到输入框
 3. 点击「开始解读」，AI会分析真实工作场景、技能要求、不适合人群
 
-### 行动规划师
+### 📝 行动规划师
 1. 进入「行动规划师」
 2. 填写你的目标岗位、年级、专业、已掌握的技能
 3. 点击「生成规划」，AI会输出能力诊断 + 4阶段行动清单
 
-### 简历优化
+### 📄 简历优化
 1. 进入「简历优化」
 2. 填写目标岗位（可选），粘贴你的简历片段
 3. 点击「开始优化」，AI会诊断问题并给出改写建议
 
-### 面试练习
+### 🎤 面试练习
 1. 进入「面试练习」
 2. 填写目标岗位，选择面试类型（行为/技术/案例）
 3. 点击「生成面试问题」，AI会出题
@@ -161,14 +185,17 @@ AI-CareerPilot/
 │   │   ├── NavIcons.tsx    # 导航SVG图标
 │   │   ├── StreamOutput.tsx # AI流式输出渲染
 │   │   ├── TagInput.tsx    # 标签输入组件
-│   │   └── RadarChart.tsx  # 雷达图组件
+│   │   ├── RadarChart.tsx  # 雷达图组件
+│   │   ├── StepProgress.tsx  # 一条龙步骤进度条
+│   │   └── StepResultCard.tsx # 一条龙结果卡片
 │   ├── contexts/           # React上下文
 │   │   └── ThemeContext.tsx # 主题（白天/夜间）管理
 │   ├── hooks/              # 自定义Hooks
 │   │   └── useStreamChat.ts # AI流式对话Hook
 │   ├── pages/              # 页面组件
 │   │   ├── Home.tsx        # 首页
-│   │   ├── Settings.tsx    # 设置页
+│   │   ├── Settings.tsx    # 设置页（API Key + 模型选择 + 主题）
+│   │   ├── AllInOne.tsx    # 求职一条龙
 │   │   ├── JobAnalyzer.tsx # 岗位翻译器
 │   │   ├── ActionPlanner.tsx # 行动规划师
 │   │   ├── ResumeCoach.tsx # 简历优化
@@ -178,9 +205,10 @@ AI-CareerPilot/
 │   │   ├── jobAnalyzer.ts
 │   │   ├── actionPlanner.ts
 │   │   ├── resumeCoach.ts
-│   │   └── interviewCoach.ts
+│   │   ├── interviewCoach.ts
+│   │   └── allInOne.ts     # 一条龙专用提示词
 │   ├── services/           # 服务层
-│   │   ├── ai.ts           # AI API调用（流式/非流式）
+│   │   ├── ai.ts           # AI API调用（流式/非流式/测试连接）
 │   │   └── storage.ts      # 本地存储管理
 │   ├── types/              # TypeScript类型定义
 │   │   └── index.ts
@@ -244,7 +272,9 @@ MIT License
 
 - [TRAE SOLO](https://solo.trae.ai) - 本项目使用 TRAE SOLO 进行开发，感谢 TRAE SOLO 提供的 AI 辅助编程能力
 - [硅基流动](https://siliconflow.cn) - 提供AI模型API服务
-- [Qwen](https://qwenlm.github.io) - Qwen2.5 大语言模型
+- [Qwen](https://qwenlm.github.io) - Qwen 系列大语言模型
+- [DeepSeek](https://deepseek.com) - DeepSeek 系列大语言模型
+- [Kimi](https://kimi.moonshot.cn) - Kimi 系列大语言模型
 - [React](https://react.dev) - 前端框架
 - [TailwindCSS](https://tailwindcss.com) - CSS框架
 - [Vite](https://vite.dev) - 构建工具
