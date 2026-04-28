@@ -57,13 +57,13 @@
 
 | 软件 | 版本要求 | 安装地址 |
 |------|---------|---------|
-| **Node.js** | >= 18.0 | [https://nodejs.org](https://nodejs.org) |
+| **Node.js** | >= 20.0 | [https://nodejs.org](https://nodejs.org) |
 | **npm** | >= 9.0（随Node.js一起安装） | - |
 | **Git** | >= 2.0 | [https://git-scm.com](https://git-scm.com) |
 
 > 💡 **如何检查是否已安装？** 打开终端（Windows按 `Win+R` 输入 `cmd`，Mac按 `Command+空格` 搜索"终端"），输入以下命令：
 > ```
-> node -v    # 应显示 v18.x.x 或更高
+> node -v    # 应显示 v20.x.x 或更高
 > npm -v     # 应显示 9.x.x 或更高
 > git --version  # 应显示 git version 2.x.x
 > ```
@@ -101,8 +101,6 @@ npm install
 1. 访问 [硅基流动官网](https://cloud.siliconflow.cn) 并注册账号
 2. 登录后，点击右上角头像 → **API密钥**
 3. 点击 **创建API密钥**，复制生成的密钥（格式为 `sk-xxxxxxxxxxxxxxxx`）
-
-> 💡 **新用户福利**：硅基流动新注册用户通常赠送免费额度，足够日常使用。
 
 ---
 
